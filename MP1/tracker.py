@@ -88,8 +88,6 @@ def add_task(name: str, description: str, due: str):
         print("Task Not Added")
         return
     save()
-
-
 def process_update(index):
     """ extracted the user input prompts to get task data then passes it to update_task() """
     # get the task by index
@@ -238,23 +236,19 @@ def get_time_remaining(index):
         task=tasks[index]
     else:
         print("Task does not exists")
-
     now=datetime.now()
     due_date=str_to_datetime(str(task["due"]))
     rem= due_date-now if due_date>now else now-due_date
-
     day=rem.days
     hours=rem.days*24
     min=hours*60
     sec=min*60
-
     d=(f'{day} day' if day==1 else f'{day} day') if day>0 else ''
     h=(f'{hours} hour' if hours==1 else f'{hours} hours')if hours >0 else " "
     m=(f"{min} minute" if min==1 else f'{min} minutes')if min>0 else " "
     s=(f'{sec} second' if sec==1 else f'{sec} seconds')if sec>0 else " "
     out=[d,h,m,s]
     l=','.join(filter(None, out))
-
     if due_date>now:
         print(f"due in{l}")
     else:
