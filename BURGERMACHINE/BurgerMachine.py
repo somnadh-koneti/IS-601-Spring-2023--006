@@ -152,8 +152,9 @@ class BurgerMachine:
         if total == str(expected):
             print("Thank you! Enjoy your burger!")
             self.total_burgers += 1
-            self.total_sales += expected  # only if successful
-            # print(f"Total sales so far {self.total_sales}")
+            self.total_sales += expected 
+            # only if successful
+            print(f"Total sales so far {self.total_sales}")
             self.reset()
         else:
             raise InvalidPaymentException
@@ -164,15 +165,14 @@ class BurgerMachine:
     def calculate_cost(self):
         # TODO add the calculation expression/logic for the inprogress_burger
         # sk3395 18-march 
-        # iterating the selections from the list and using i.cost to find out the cost of the product , and checking the data type int or float and adding it to
-        # the variable val and retur it .
+        # iterating the selections from the list and using i.cost to find out the cost of the product , and checking the data type int or float and adding it to the variable val and return it .
         val=0
         for i in self.inprogress_burger:
             if type(i.cost)==float:
                 val+=i.cost
-            elif type(i.cost)==int:
+            if type(i.cost)==int:
                 val+=i.cost
-        
+
         return val
 
     def run(self):
@@ -210,8 +210,7 @@ class BurgerMachine:
             print("Quitting the burger machine")
             sys.exit()
         # sk3395 18-march
-        # first i was trying out to find out in which stage the out of exception was ocurred and printing the bun or patty or toppings was out of stock. The bun or patty or topping variable
-        # stores the input we enter.
+        # first i was trying to find out in which stage the out of exception was ocurred and printing the bun or patty or toppings was out of stock. The bun or patty or topping variable stores the input we enter.
         except OutOfStockException:
             # show an appropriate message of what stage/category was out of stock
             if self.currently_selecting == STAGE.Bun:
@@ -222,8 +221,7 @@ class BurgerMachine:
                 print(f"{toppings} was out of stock, Please choose other toppings in the list.\n")
 
         #sk3395 18-march
-        # I was asking the user to type the command clean. if the user enters the correct commnad cleaning gets sucessfull, if the command enterd is wrong machine cleaning fails and displays
-        #  an message to enter correct command
+        # I was asking the user to type the command clean. if the user enters the correct commnad cleaning gets sucessfull, if the command enterd is wrong machine cleaning fails and displays an message to enter correct command
         except NeedsCleaningException:
             val=input(f"Machine needs to be cleaned,Please enter clean.\n")
             while True:
@@ -234,8 +232,7 @@ class BurgerMachine:
                 else:
                     val=input(f"Machine cleaning failed,Please enter correct command=clean.\n")
         #sk3395 18-march
-        # first i was trying out to find out in which stage the invalid choice exception was ocurred and printing the bun or patty or toppings entered was not in list. The bun or patty or topping variable
-        # stores the input we enter.
+        # first i was trying out to find out in which stage the invalid choice exception was ocurred and printing the bun or patty or toppings entered was not in list. The bun or patty or topping variable stores the input we enter.
         except InvalidChoiceException:
             # show an appropriate message of what stage/category was the invalid choice was in
             if self.currently_selecting == STAGE.Bun:
@@ -246,8 +243,7 @@ class BurgerMachine:
                 print(f"Selected item {toppings} was not in list toppings, Please choose toppings from the provided list.\n ")
         #sk3395 18-march
         #first i was trying out to find out in which stage the exceeeded remaining choices was ocurred and printing you have exeeced the limit of chossing patty or toppings. if it is in patty moving 
-        # it to next stage toppings or if it is in toppings moving it to next stage payment section 
-        # stores the input we enter
+        # it to next stage toppings or if it is in toppings moving it to next stage payment section .
         except ExceededRemainingChoicesException:
             # show an appropriate message of which stage/category was exceeded
             # move to the next stage/category
@@ -257,8 +253,8 @@ class BurgerMachine:
             elif self.currently_selecting == STAGE.Toppings:
                 print("You have exceeded the limit of choosing toppings, You will be redirected to paymnent.\n")
                 self.currently_selecting = STAGE.Pay
-        #1sk3395 18-march
-        # if invalid payment exception occurs, it will display an message enterd wrong amount payment fialed. 
+        #sk3395 18-march
+        # if invalid payment exception occurs, it will display an message enterd wrong amount payment failed. 
         except InvalidPaymentException:
             print(f"Payment Failed, please enter the exact value.\n")
         except:
