@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% block title %}Edit Employee{% endblock %}
+{% block content %}
+{% from "company_dropdown.html" import company_dropdown %}
+
+<div class="container-fluid">
+    <div class="h1">Edit Employee</div>
+    <div>
+        <form method="POST">
+            <div class="form-group mb-3">
+                <label for="first_name" class="form-label">first_name</label>
+                <input id="first_name" class="form-control" name="first_name" type="text" value="{{employee.first_name}}">
+            </div>
+            <!-- sk3395 04/08/23 -->
+            <div class="form-group mb-3">
+                <label for="last_name" class="form-label">last_name</label>
+                <input id="last_name" class="form-control" name="last_name" type="text" value="{{employee.last_name}}">
+            </div>
+            <!-- sk3395 04/08/23 -->
+            <div class="form-group mb-3">
+                <label for="email" class="form-label">email</label>
+                <input id="email" class="form-control" name="email" type="text" value="{{employee.email}}">
+            </div>
+            <!-- sk3395 04/08/23 -->
+            {#
+            generate fields with proper types for
+            first_name (required)
+            last_name (required)
+            email (required)
+            and prefill the fields with loaded employee data
+            #}
+            {# use the below for company selection #}
+            {{ company_dropdown(employee.company) }}
+            <input type="submit" class="btn btn-primary" value="Save Employee" />
+        </form>
+    </div>
+</div>
+{% endblock %}
