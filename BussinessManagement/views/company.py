@@ -8,13 +8,12 @@ def search():
     # DO NOT DELETE PROVIDED COMMENTS
     # TODO search-1 retrieve id, name, address, city, country, state, zip, website, employee count as employees for the company
     # don't do SELECT *
-    
+
     query = """SELECT c.id, c.name, c.address, c.city, c.country, c.state, c.zip, c.website, COUNT(e.id) AS employees FROM IS601_MP3_Companies c 
     LEFT JOIN IS601_MP3_Employees e ON e.company_id = c.id WHERE 1=1 """
-    #sk3395 4/10/23
-    args = {} # <--- add values to replace %s/%(named)s placeholders
+    args = []  # <--- add values to replace %s/%(named)s placeholders
     allowed_columns = ["name", "city", "country", "state"]
-    allowed_list=[(i,i) for i in allowed_columns]
+    allowed_list = [(v, v) for v in allowed_columns]
     # TODO search-2 get name, country, state, column, order, limit request args
     name = request.args.get('name')
     country = request.args.get('country')
@@ -23,7 +22,7 @@ def search():
     column = request.args.get('column')
     order = request.args.get('order')
     limit = request.args.get('limit')
-    #sk3395 4/10/23
+    #UCID:sk3395;Date:04/010/23
     # TODO search-3 append a LIKE filter for name if provided
     if name:
         query += " AND c.name like %s"
@@ -37,12 +36,11 @@ def search():
         query += " AND c.state like %s"
         args.append(f"%{state}%")
     query += " GROUP BY c.id"
-    #sk3395 04/10/23
     # TODO search-6 append sorting if column and order are provided and within the allows columsn and allowed order asc,desc
     if column and order:
         if column in allowed_columns and order in ["asc", "desc"]:
             query += f" ORDER BY {column} {order}"
-    #sk3395 4/10/23
+     #UCID:sk3395;Date:04/10/23
     # TODO search-7 append limit (default 10) or limit greater than 1 and less than or equal to 100
     # TODO search-8 provide a proper error message if limit isn't a number or if it's out of bounds
     if limit and int(limit) > 0 and int(limit) <= 100:
@@ -50,14 +48,12 @@ def search():
         args.append(int(limit))
     elif limit and (int(limit) <= 0 or int(limit) > 100):
         flash("Enter the limit between 1 and 100", 'warning')
-    #sk3395 04/10/23
 
-    
-    print("query",query)
+    print("query", query)
     print("args", args)
     try:
-        result = DB.selectAll(query, args)
-        #print(f"result {result.rows}")
+        result = DB.selectAll(query, *args)
+        # print(f"result {result.rows}")
         if result.status:
             rows = result.rows
             print(f"rows {rows}")
@@ -67,10 +63,12 @@ def search():
     # hint: use allowed_columns in template to generate sort dropdown
     # hint2: convert allowed_columns into a list of tuples representing (value, label)
     # do this prior to passing to render_template, but not before otherwise it can break validation
-    
-    return render_template("list_companies.html", rows=rows, allowed_columns=allowed_columns)
 
-@company.route("/add", methods=["GET","POST"])
+    return render_template("list_companies.html", rows=rows, allowed_columns=allowed_list)
+    #UCID:sk3395;Date:04/08/23
+
+
+@company.route("/add", methods=["GET", "POST"])
 def add():
     if request.method == "POST":
         # TODO add-1 retrieve form data for name, address, city, state, country, zip, website
@@ -87,8 +85,7 @@ def add():
         # TODO add-8 zipcode is required (flash proper error message)
         # note: call zip variable zipcode as zip is a built in function it could lead to issues
 
-        has_error = False # use this to control whether or not an insert occurs
-        
+        has_error = False  # use this to control whether or not an insert occurs
 
         name = str(request.form['name'])
         if not name:
@@ -109,7 +106,7 @@ def add():
             has_error = True
             flash("Zipcode is required", "danger")
         website = str(request.form['website'])
-        #sk3395 4/10/23
+        #UCID:sk3395;Date:04/08/23
 
         if not has_error:
             try:
@@ -117,14 +114,15 @@ def add():
                 INSERT INTO IS601_MP3_Companies
                 (name, address, city, country, state, zip, website) VALUES(%s, %s, %s, %s, %s, %s, %s)
                 """, name, address, city, country, state, zip, website)  # <-- TODO add-8 add query and add arguments
+                #UCID:sk3395;Date:04/10/23
                 if result.status:
                     flash("Added Company", "success")
             except Exception as e:
                 # TODO add-9 make message user friendly
                 flash(str(e), "danger")
-        #sk3395 4/10/23
-        
+
     return render_template("add_company.html")
+
 
 @company.route("/edit", methods=["GET", "POST"])
 def edit():
@@ -134,7 +132,8 @@ def edit():
         flash("Company ID is missing", "danger")
     else:
         if request.method == "POST":
-            data = {"id": id} # use this as needed, can convert to tuple if necessary
+            # use this as needed, can convert to tuple if necessary
+            data = {"id": id}
             # TODO edit-1 retrieve form data for name, address, city, state, country, zip, website
             # TODO edit-2 name is required (flash proper error message)
             # TODO edit-3 address is required (flash proper error message)
@@ -147,12 +146,12 @@ def edit():
             # hint see geography.py and pycountry documentation
             # TODO edit-7 website is not required
             # TODO edit-8 zipcode is required (flash proper error message)
-            
+
             # note: call zip variable zipcode as zip is a built in function it could lead to issues
             # populate data dict with mappings
-            has_error = False # use this to control whether or not an insert occurs
+            has_error = False  # use this to control whether or not an insert occurs
 
-            #sk3395 4/10/23
+
             name = str(request.form.get('name'))
             if not name:
                 has_error = True
@@ -172,6 +171,7 @@ def edit():
                 has_error = True
                 flash("Zipcode is required", "danger")
             website = str(request.form.get('website') or '')
+            #UCID:sk3395;Date:04/10/23
 
             if not has_error:
                 try:
@@ -189,7 +189,7 @@ def edit():
                         website = %s
                     WHERE id = %s
                     """, name, address, city, country, state, zip, website, id)
-                    #sk3395 4/10/23
+                                #UCID:sk3395;Date:04/10/23
 
                     if result.status:
                         print("updated record")
@@ -198,20 +198,19 @@ def edit():
                     # TODO edit-10 make this user-friendly
                     print(f"{e}")
                     flash(str(e), "danger")
-
-        row = {}
-        try:
-            # TODO edit-11 fetch the updated data
-            result = DB.selectOne("SELECT name, address, city, country, state, zip, website FROM IS601_MP3_Companies WHERE id = %s", id)
-            if result.status:
-                row = result.row
-                
-        except Exception as e:
-            # TODO edit-12 make this user-friendly
-            flash(str(e), "danger")
+    row = {}
+    try:
+        # TODO edit-11 fetch the updated data
+        result = DB.selectOne(
+            "SELECT name, address, city, country, state, zip, website FROM IS601_MP3_Companies WHERE id = %s", id)
+        if result.status:
+            row = result.row
+    except Exception as e:
+        # TODO edit-12 make this user-friendly
+        flash(str(e), "danger")
     # TODO edit-13 pass the company data to the render template
     return render_template("edit_company.html", company=row)
-#sk3395 4/10/23
+#UCID:sk3395;Date:04/08/23
 
 @company.route("/delete", methods=["GET"])
 def delete():
@@ -221,8 +220,9 @@ def delete():
     # TODO delete-4 ensure a flash message shows for successful delete
     # TODO delete-5 for all employees assigned to this company set their company_id to None/null
     # TODO delete-6 if id is missing, flash necessary message and redirect to search
-    
+
     id = request.args.get('id')
+
     print("printing id:",id)
     args = {**request.args}
     if id:
@@ -232,6 +232,5 @@ def delete():
         if result:
             flash("Deleted successfully", 'success')
     return redirect(url_for("company.search", **args))
-
-    #sk3395 4/10/23
-    
+    pass
+     #UCID:sk3395; Date: 04/10/23

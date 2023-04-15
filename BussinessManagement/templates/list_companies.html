@@ -15,24 +15,22 @@
     #}
     <form method="GET">
         <div class="row">
-
             <div class="col">
                 <input id="name" class="form-control" placeholder="name" name="name" type="text"
                     value="{{ allowed_columns[0].value }}">
             </div>
-            <!-- sk3395 04/08/23 -->
+            <!-- UCID: sk3395; Date: 04/08/23 -->
 
-            
+            {{country_state_selector(layout="horizontal")}}
+            {{sort_filter(cols=allowed_columns)}}
             <div class="col">
                 <input id="limit" type="number" class="form-control" value="10" name="limit" />
             </div>
-            <!-- sk3395 04/10/23 -->
-            {{country_state_selector(layout="horizontal")}}
-            {{sort_filter(cols=[...])}}
-
+            <!-- UCID: sk3395; Date: 04/08/23 -->
             <div class="col">
                 <input type="submit" class="btn btn-primary" value="Filter" />
             </div>
+            <!-- UCID: sk3395; Date: 04/08/23 -->
             <div class="col">
                 <a href="?" class="btn btn-secondary">Reset</a>
             </div>
@@ -55,8 +53,8 @@
                     <th>website</th>
                     <th>employees</th>
                     <th>Actions</th>
-                    <!-- sk3395 4/10/23-->>
                 </tr>
+                <!-- UCID: sk3395; Date: 04/08/23 -->
             </thead>
             <tbody>
                 {# generate tr with td tags for each piece of data #}
@@ -68,6 +66,7 @@
                 an edit button that passes the company id to company edit
                 a delete button that passes the company id and the request args to the company delete route
                 #}
+                {% for row in rows %}
                 <tr>
                     <td>{{ row.id }}</td>
                     <td>{{ row.name }}</td>
@@ -82,8 +81,9 @@
                         <a href="{{url_for('company.edit', id=row.id)}}">Edit</a>
                         <a href="{{url_for('company.delete', id=row.id)}}">Delete</a>
                     </td>
-                    <!-- sk3395 04/10/23 -->
+                    <!-- UCID: sk3395; Date: 04/08/23 -->
                 </tr>
+                {% endfor %}
 
             </tbody>
             {% else %}

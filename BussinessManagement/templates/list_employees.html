@@ -5,11 +5,12 @@
 {% from "sort_filter.html" import sort_filter %}
 <div class="container-fluid">
     <div class="h1 text-center">{{request.args.get("company_name","")}} Employee Directory</div>
+
     <form method="GET">
         {# TODO
         build a horizontal filter/sort form with
-        first_name (show as first name, but name should be fn)
-        last_name (show as last name, but name should be ln)
+        fn (show as first name, but name should be fn)
+        ln (show as last name, but name should be ln)
         email (validate as text, not email, so partial match works)
         company (provided) (name is company value is the id)
         sort/order (using allowed_columns and provided partial template)
@@ -22,17 +23,17 @@
                 <input id="fn" class="form-control" placeholder="First Name" name="fn" type="text"
                     value="{{request.args.get('fn') or ''}}">
             </div>
-            <!-- sk3395 04/10/23 -->
+            <!-- UCID: sk3395; Date: 04/08/23 -->
             <div class="col">
                 <input id="ln" class="form-control" placeholder="Last Name" name="ln" type="text"
                     value="{{request.args.get('ln') or ''}}">
             </div>
-            <!-- sk3395 04/10/23 -->
+            <!-- UCID: sk3395; Date: 04/08/23 -->
             <div class="col">
                 <input id="email" class="form-control" placeholder="email" name="email" type="text"
                     value="{{request.args.get('email') or ''}}">
             </div>
-            <!-- sk3395 04/10/23 -->
+            <!-- UCID: sk3395; Date: 04/08/23 -->
             <div class="col">
                 <label class="visually-hidden" for="company">Company</label>
                 {{company_dropdown(request.args.get("company"))}}
@@ -62,7 +63,7 @@
                 <th>company id</th>
                 <th>company name</th>
                 <th>Actions</th>
-                <!--sk3395 4/10/23-->>
+                <!-- UCID: sk3395; Date: 04/08/23 -->
             </tr>
         </thead>
         <tbody>
@@ -71,6 +72,7 @@
             an edit button that passes the employee id to employee edit
             a delete button that passes the employee id and the request args to the employee delete route
             #}
+            {% for row in rows %}
             <tr>
                 <td>{{ row.id }}</td>
                 <td>{{ row.first_name }}</td>
@@ -82,8 +84,9 @@
                     <a href="{{url_for('employee.edit', id=row.id)}}">Edit</a>
                     <a href="{{url_for('employee.delete', id=row.id)}}">Delete</a>
                 </td>
-                <!-- sk3395 04/10/23 -->
+                <!-- UCID: sk3395; Date: 04/08/23 -->
             </tr>
+            {% endfor %}
 
         </tbody>
         {% else %}

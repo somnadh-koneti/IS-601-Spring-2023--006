@@ -5,18 +5,16 @@ employee = Blueprint('employee', __name__, url_prefix='/employee')
 
 @employee.route("/search", methods=["GET"])
 def search():
+    #UCID:sk3395; DATE:04/08/23
     rows = []
     # DO NOT DELETE PROVIDED COMMENTS
     # TODO search-1 retrieve employee id as id, first_name, last_name, email, company_id, company_name using a LEFT JOIN
     query = """SELECT e.id, e.first_name, e.last_name, e.email, e.company_id, IF(c.name is not null, c.name,'N/A') AS company_name from 
     IS601_MP3_Employees e LEFT JOIN IS601_MP3_Companies c ON e.company_id = c.id WHERE 1=1"""  
-    #sk3395 4/10/23
-    
     args = []  # <--- add values to replace %s/%(named)s placeholders
     allowed_columns = ["first_name", "last_name", "email", "company_name"]
     allowed_list = [(v, v) for v in allowed_columns]
     # TODO search-2 get fn, ln, email, company, column, order, limit from request args
-    #sk3395 4/10/23
     first_name = request.args.get('fn')
     last_name = request.args.get('ln')
     email = request.args.get('email')
@@ -25,7 +23,6 @@ def search():
     column = request.args.get('column')
     order = request.args.get('order')
     limit = request.args.get('limit')
-
     # TODO search-3 append like filter for first_name if provided
     if first_name:
         query += " AND e.first_name like %s"
@@ -34,8 +31,6 @@ def search():
     if last_name:
         query += " AND e.last_name like %s"
         args.append(f"%{last_name}%")
-
-    #sk3395 4/10/23
     # TODO search-5 append like filter for email if provided
     if email:
         query += " AND email like %s"
@@ -43,7 +38,6 @@ def search():
     # TODO search-6 append equality filter for company_id if provided
     if company:
         query += f" AND company_id = {company}"
-    
     # TODO search-7 append sorting if column and order are provided and within the allowed columns and order options (asc, desc)
     if column and order:
         print(column, order)
@@ -57,8 +51,6 @@ def search():
     # TODO search-9 provide a proper error message if limit isn't a number or if it's out of bounds
     elif limit and (int(limit) <= 0 or int(limit) > 100):
         flash("Enter the limit between 1 and 100", 'warning')
-    
-    #sk3395 4/10/23
     print("query", query)
     print("args", args)
     try:
@@ -68,13 +60,13 @@ def search():
     except Exception as e:
         # TODO search-10 make message user friendly
         flash(e, "error")
+        #UCID:sk3395; DATE:04/08/23
     # hint: use allowed_columns in template to generate sort dropdown
     # hint2: convert allowed_columns into a list of tuples representing (value, label)
     # do this prior to passing to render_template, but not before otherwise it can break validation
-
     return render_template("list_employees.html", rows=rows, allowed_columns=allowed_list)
-    
-    #sk3395 4/10/23
+    #UCID:sk3395; Date: 04/08/23
+ 
 @employee.route("/add", methods=["GET", "POST"])
 def add():
     if request.method == "POST":
@@ -114,7 +106,8 @@ def add():
                 # TODO add-7 make message user friendly
                 flash(str(e), "danger")
     return render_template("add_employee.html")
-    #sk3395 4/10/23
+    #UCID:sk3395; Date: 04/10/23
+
 
 @employee.route("/edit", methods=["GET", "POST"])
 def edit():
@@ -122,9 +115,9 @@ def edit():
     id = request.args.get('id')
     if not id:  # TODO update this for TODO edit-1
         flash("Company ID is missing", "danger")
+        #UCID:sk3395; Date: 04/10/23
     else:
-        if request.method == "POST":
-            #sk3395 4/10/23            
+        if request.method == "POST":            
             # TODO edit-1 retrieve form data for first_name, last_name, company, email
             first_name = str(request.form.get('first_name'))
             last_name = str(request.form.get('last_name'))
@@ -147,23 +140,25 @@ def edit():
                 return redirect("add")
             # TODO edit-5a verify email is in the correct format
             has_error = False  # use this to control whether or not an insert occurs
-    
             if not has_error:
                 try:
                     # TODO edit-6 fill in proper update query
                     result = DB.update("""
                     UPDATE IS601_MP3_Employees SET first_name = %s, last_name = %s, company_id = %s, email = %s WHERE id = %s
                     """,first_name,last_name,company_id, email, id)
+                    #sk3395 4/10/23
                     if result.status:
                         flash("Updated record", "success")
                 except Exception as e:
                     # TODO edit-7 make this user-friendly
                     flash(f" Following exception occured while updating the employee: {str(e)}", "danger")
+                    #sk3395 4/10/23
         row = {}
         try:
             # TODO edit-8 fetch the updated data
             result = DB.selectOne("""SELECT e.first_name, e.last_name, e.email, e.company_id, IF(c.name is not null, c.name,'N/A') AS 
             company_name from IS601_MP3_Employees e LEFT JOIN IS601_MP3_Companies c ON e.company_id = c.id WHERE e.id = %s""", id)
+            #sk3395 4/10/23
             if result.status:
                 row = result.row
         except Exception as e:
@@ -171,7 +166,7 @@ def edit():
             flash(f" Following exception occured while fetching the updated employee record: {str(e)}", "danger")
     # TODO edit-10 pass the employee data to the render template
     return render_template("edit_employee.html", employee=row)
-    #sk3395 4/10/23
+    #UCID:sk3395; Date: 04/10/23
 
 
 @employee.route("/delete", methods=["GET"])
@@ -182,6 +177,7 @@ def delete():
     # TODO delete-4 ensure a flash message shows for successful delete
     # TODO delete-5 if id is missing, flash necessary message and redirect to search
     id = request.args.get("id")
+    #UCID:sk3395; Date: 04/10/23
     args = {**request.args}
     if id:
         try:
@@ -193,4 +189,5 @@ def delete():
         del args["id"]
     flash(f" id is missing", "danger")
     return redirect(url_for("employee.search", **args))
-    #sk3395 4/10/23
+    pass
+    #UCID:sk3395; Date: 04/10/23

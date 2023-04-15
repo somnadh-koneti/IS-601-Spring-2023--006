@@ -1,8 +1,8 @@
 import io
+import csv
 from flask import Blueprint, render_template, request, redirect, flash
 from werkzeug.utils import secure_filename
 from sql.db import DB
-import csv
 import traceback
 admin = Blueprint('admin', __name__, url_prefix='/admin')
 
@@ -18,13 +18,14 @@ def importCSV():
         if file.filename == '':
             flash('No selected file', "warning")
             return redirect(request.url)
+         # TODO importcsv-1 check that it's a .csv file, return a proper flash message if it's not
         elif file.filename.lower().endswith('.csv'):
             print('file name --',file.filename)
         else:
             flash('Invalid File ', "warning")
             return redirect(request.url)
-        #sk3395 4/10/23
-        # TODO importcsv-1 check that it's a .csv file, return a proper flash message if it's not
+
+        #UCID:sk3395; Date: 04/08/23
         if file and secure_filename(file.filename):
             companies = []
             employees = []
@@ -51,8 +52,9 @@ def importCSV():
             # Note: this reads the file as a stream instead of requiring us to save it
             stream = io.TextIOWrapper(file.stream._file, "UTF8", newline=None)
             # TODO importcsv-2 read the csv file stream as a dict
+          
             
-            for row in csv.DictReader(stream,delimiter=','):
+            for row in csv.DictReader(stream, delimiter=','):
                 print(row) #example
                 # TODO importcsv-3 extract company data and append to company list 
                 # as a dict only with company data if all is present
@@ -61,10 +63,10 @@ def importCSV():
                     "zip": row["zip"], "website" : row["web"]})
                 if row["first_name"] and row["last_name"] and row["email"] and row["company_name"]:
                     employees.append({"first_name" : row["first_name"],  "last_name" :  row["last_name"], "email" : row["email"], "company_name" : row["company_name"]})
+                
                 # TODO importcsv-4 extract employee data and append to employee list 
                 # as a dict only with employee data if all is present
-                
-               # sk3395 4/10/23
+            #UCID:sk3395; Date: 04/08/23  
                
             if len(companies) > 0:
                 print(f"Inserting or updating {len(companies)} companies")
@@ -86,10 +88,10 @@ def importCSV():
                 except Exception as e:
                     traceback.print_exc()
                     flash("There was an error loading in the csv data", "danger")
-                    # sk3395 4/10/23
+                    #UCID:sk3395; Date: 04/08/23
             else:
                  # TODO importcsv-8 display flash message (info) that no employees were loaded
-                flash("No employees records were loaded", "danger")
+                  flash("No employees records were loaded", "danger")
             return render_template("upload.html")
             try:
                 result = DB.selectOne("SHOW SESSION STATUS LIKE 'questions'")
@@ -98,3 +100,4 @@ def importCSV():
                     traceback.print_exc()
                     flash("There was an error counting session queries", "danger")
     return render_template("upload.html")
+    #UCID:sk3395; Date: 04/08/23
