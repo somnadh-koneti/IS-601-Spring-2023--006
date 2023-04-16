@@ -63,11 +63,10 @@ def importCSV():
                     "zip": row["zip"], "website" : row["web"]})
                 if row["first_name"] and row["last_name"] and row["email"] and row["company_name"]:
                     employees.append({"first_name" : row["first_name"],  "last_name" :  row["last_name"], "email" : row["email"], "company_name" : row["company_name"]})
-                
+                #UCID:sk3395; Date: 04/08/23
                 # TODO importcsv-4 extract employee data and append to employee list 
                 # as a dict only with employee data if all is present
-            #UCID:sk3395; Date: 04/08/23  
-               
+            #sk3395 4/8/23
             if len(companies) > 0:
                 print(f"Inserting or updating {len(companies)} companies")
                 try:
@@ -88,7 +87,6 @@ def importCSV():
                 except Exception as e:
                     traceback.print_exc()
                     flash("There was an error loading in the csv data", "danger")
-                    #UCID:sk3395; Date: 04/08/23
             else:
                  # TODO importcsv-8 display flash message (info) that no employees were loaded
                   flash("No employees records were loaded", "danger")
