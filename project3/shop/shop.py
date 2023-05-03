@@ -235,9 +235,7 @@ def purchase():
                 order["fname"] = fname
                 order["lname"] = lname
                 order["address"] = address
-        # record order history
         if order_id > -1 and not has_error:
-            # Note: Not really an insert 1, it'll copy data from Table B into Table A
             result = DB.insertOne("""INSERT INTO IS601_S_OrderItems (quantity, unit_price, order_id, product_id)
             SELECT desired_quantity, unit_price, %s, product_id FROM IS601_S_Cart c WHERE c.user_id = %s""",
             order_id, current_user.get_id())
@@ -245,7 +243,6 @@ def purchase():
                 flash("Error recording order history", "danger")
                 has_error = True
                 DB.getDB().rollback()
-        # update stock based on cart data
         if not has_error:
             #sk3395 Dec 24
             result = DB.update("""
