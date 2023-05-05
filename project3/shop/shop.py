@@ -75,7 +75,7 @@ def items():
 def shop_list():
     rows = []
     args = []
-    # sk3395  Dec 24
+    # sk3395  April 24
     name = request.args.get("name")
     category = request.args.get("category")
     price = request.args.get("price")
@@ -185,7 +185,7 @@ def purchase():
         DB.getDB().autocommit = False # make a transaction
 
         # get cart to verify
-        #  sk3395 Dec 24
+        #  sk3395 April 24
         result = DB.selectAll("""SELECT c.id, product_id, name, c.desired_quantity, i.stock, c.unit_price as cart_cost, i.unit_price as item_cost, (c.desired_quantity * c.unit_price) as subtotal 
         FROM IS601_S_Cart c JOIN IS601_S_Products i on c.product_id = i.id
         WHERE c.user_id = %s
@@ -213,7 +213,7 @@ def purchase():
         # create order data
         order_id = -1
         if not has_error:
-            #sk3395 Dec24
+            #sk3395 April24
             address = request.form.get('apt') + "," + request.form.get('city') + "," + request.form.get('state') + "," + request.form.get('country') + "," + request.form.get('zpcode')
             payment_method = request.form.get('paymentmethod')
             money_received = request.form.get('amount')
@@ -244,7 +244,7 @@ def purchase():
                 has_error = True
                 DB.getDB().rollback()
         if not has_error:
-            #sk3395 Dec 24
+            #sk3395 April 24
             result = DB.update("""
             UPDATE IS601_S_Products 
                 set stock = stock - (select IFNULL(desired_quantity, 0) FROM IS601_S_Cart WHERE product_id = IS601_S_Products.id and user_id = %(uid)s) 

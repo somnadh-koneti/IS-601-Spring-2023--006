@@ -7,7 +7,7 @@ on:
   push:
     branches:
       - dev
-      - Milestone2
+      - Milestone3
 
 # Your workflows jobs.
 jobs:
@@ -17,7 +17,7 @@ jobs:
       DB_URL: ${{secrets.DB_URL}}
       PORT: 8080
       # change to the project directory you're deploying
-      WORKING_DIRECTORY: project2
+      WORKING_DIRECTORY: project3
     defaults:
       run:
           working-directory: ${{env.WORKING_DIRECTORY}}
