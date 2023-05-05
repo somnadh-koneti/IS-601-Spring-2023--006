@@ -1,6 +1,6 @@
 <table><tr><td> <em>Assignment: </em> IS601 Milestone 2 Shop Project</td></tr>
 <tr><td> <em>Student: </em> Somanadh Koneti (sk3395)</td></tr>
-<tr><td> <em>Generated: </em> 4/26/2023 3:24:04 AM</td></tr>
+<tr><td> <em>Generated: </em> 5/5/2023 4:04:22 PM</td></tr>
 <tr><td> <em>Grading Link: </em> <a rel="noreferrer noopener" href="https://learn.ethereallab.app/homework/IS601-006-S23/is601-milestone-2-shop-project/grade/sk3395" target="_blank">Grading</a></td></tr></table>
 <table><tr><td> <em>Instructions: </em> <ol><li>Checkout Milestone2 branch</li><li>Create a new markdown file called milestone2.md</li><li>git add/commit/push immediate</li><li>Fill in the below deliverables</li><li>At the end copy the markdown and paste it into milestone2.md</li><li>Add/commit/push the changes to Milestone2</li><li>PR Milestone2 to dev and verify</li><li>PR dev to prod and verify</li><li>Checkout dev locally and pull changes to get ready for Milestone 3</li><li>Submit the direct link to this new milestone2.md file from your GitHub prod branch to Canvas</li></ol><p>Note: Ensure all images appear properly on github and everywhere else. Images are only accepted from dev or prod, not local host. All website links must be from prod (you can assume/infer this by getting your dev URL and changing dev to prod).</p></td></tr></table>
 <table><tr><td> <em>Deliverable 1: </em> Users with admin or shop owner will be able to add products </td></tr><tr><td><em>Status: </em> <img width="100" height="20" src="https://user-images.githubusercontent.com/54863474/211707773-e6aef7cb-d5b2-4053-bbb1-b09fc609041e.png"></td></tr>
@@ -36,7 +36,7 @@
 </td></tr>
 </table></td></tr>
 <tr><td> <em>Sub-Task 3: </em> Add a screenshot of the filter/sort logic from the code</td></tr>
-<tr><td><table><tr><td><img width="768px" src="https://user-images.githubusercontent.com/121911063/234499715-382c32b2-187f-4d2e-80c4-54e046cb4dc2.png"/></td></tr>
+<tr><td><table><tr><td><img width="768px" src="https://user-images.githubusercontent.com/121911063/236558013-a3dcb65c-b799-46c6-a135-88d3cc9bb39b.png"/></td></tr>
 <tr><td> <em>Caption:</em> <p>screenshot of the filter/sort logic<br></p>
 </td></tr>
 </table></td></tr>
